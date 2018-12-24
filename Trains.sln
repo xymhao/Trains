@@ -1,9 +1,10 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Trains", "Trains\Trains.csproj", "{C618A7E0-A103-4688-902D-0FFD3D15E6C7}"
+VisualStudioVersion = 15.0.28307.106
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trains", "Trains\Trains.csproj", "{C618A7E0-A103-4688-902D-0FFD3D15E6C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainsTests", "TrainsTests\TrainsTests.csproj", "{AED76C9E-35A0-413A-9383-06B2CD174E0D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainsTests", "TrainsTests\TrainsTests.csproj", "{32A49136-A0E2-4C8E-99AB-5DC084667255}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +16,15 @@ Global
 		{C618A7E0-A103-4688-902D-0FFD3D15E6C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C618A7E0-A103-4688-902D-0FFD3D15E6C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C618A7E0-A103-4688-902D-0FFD3D15E6C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AED76C9E-35A0-413A-9383-06B2CD174E0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AED76C9E-35A0-413A-9383-06B2CD174E0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AED76C9E-35A0-413A-9383-06B2CD174E0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AED76C9E-35A0-413A-9383-06B2CD174E0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32A49136-A0E2-4C8E-99AB-5DC084667255}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32A49136-A0E2-4C8E-99AB-5DC084667255}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32A49136-A0E2-4C8E-99AB-5DC084667255}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32A49136-A0E2-4C8E-99AB-5DC084667255}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3B67D65A-A30F-4218-9947-1689034CDFC2}
 	EndGlobalSection
 EndGlobal
