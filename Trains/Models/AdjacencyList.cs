@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Trains.Models;
 
-namespace Trains.Utils
+namespace Trains
 {
     public class AdjacencyList : IList<VertexNode>
     {
@@ -115,16 +114,16 @@ namespace Trains.Utils
         //添加有向边
         private void AddDirectedEdge(VertexNode fromVer, VertexNode toVer, decimal weight)
         {
-            if (fromVer._firstArc == null) //无邻接点时
+            if (fromVer.FirstArc == null) //无邻接点时
             {
-                fromVer._firstArc = new ArcNode(toVer, weight);
+                fromVer.FirstArc = new ArcNode(toVer, weight);
             }
             else
             {
-                ArcNode tmp, arcNode = fromVer._firstArc;
+                ArcNode tmp, arcNode = fromVer.FirstArc;
                 do
                 {   //检查是否添加了重复边
-                    if (arcNode.GetNextNodeData().Equals(toVer._data))
+                    if (arcNode.GetVertexNodeData().Equals(toVer._data))
                     {
                         throw new ArgumentException("添加了重复的边！");
                     }
@@ -206,7 +205,6 @@ namespace Trains.Utils
             return _list.GetEnumerator();
         }
 
-        #region DFS
         public string GetDistanceOfRoutes(List<string> stops)
         {
             decimal result = 0;
@@ -217,10 +215,10 @@ namespace Trains.Utils
                 {
                     return "NO SUCH ROUTE";
                 }
-                var arcNode = start._firstArc;
+                var arcNode = start.FirstArc;
                 do
                 {
-                    if (arcNode.GetNextNodeData().Equals(stops[i + 1]))
+                    if (arcNode.GetVertexNodeData().Equals(stops[i + 1]))
                     {
                         result += arcNode._weight;
                         break;
@@ -230,78 +228,60 @@ namespace Trains.Utils
             }
             return result.ToString();
         }
-        public void DFSTraverse(VertexNode vrtex, Func<int, ArcNode, decimal, bool> func = null, int curStops = 0, int weight = 0) //深度优先遍历
+
+        //深度优先遍历
+        public void GetResultNumber(string start, Func<int, string, decimal, bool> func = null, int count = 0) 
         {
-            InitVisited(); //将visited标志全部置为false
-            DFS(vrtex, func, curStops); //从第一个顶点开始遍历
+            var startVertex = Find(start);
+            InitVisited();
+            DFS(startVertex, func, count); 
         }
 
-        public void DFS(VertexNode vrtexNode, Func<int, ArcNode, decimal, bool> func = null, int curStops = 0, decimal weight = 0) //使用递归进行深度优先遍历
+        //使用递归进行深度优先遍历
+        public void DFS(VertexNode vrtexNode, Func<int, string, decimal, bool> func = null, int count = 0, decimal weight = 0) 
         {
-            vrtexNode._visited = true;
-            ArcNode node = vrtexNode._firstArc;
+            vrtexNode.Visited = true;
+            ArcNode node = vrtexNode.FirstArc;
             while (node != null)
             {
-                curStops = curStops == 0 ? 1 : curStops;
+                count = count == 0 ? 1 : count;
                 weight += node._weight;
                 //外置条件是否继续遍历
-                var isdfs = func?.Invoke(curStops, node, weight) ?? false;
-                var nextVertex = node.GetNextVertexNode();
+                var isdfs = func?.Invoke(count, node.GetVertexNodeData(), weight) ?? false;
+                var nextVertex = node.GetVertexNode();
                 //如果邻接点未被访问，则递归访问它的边
-                if (!nextVertex._visited || isdfs)
+                if (!nextVertex.Visited || isdfs)
                 {
-                    DFS(nextVertex, func, curStops + 1, weight);
+                    DFS(nextVertex, func, count + 1, weight);
                 }
                 weight -= node._weight;
                 node = node._nextArc;
             }
         }
-        public void ShortestPath(VertexNode vertexNode, Action<VertexNode, ArcNode> func = null)
+
+        public void ShortestPath(string start, Action<VertexNode, ArcNode> func = null)
         {
             Queue<VertexNode> queue = new Queue<VertexNode>();
             InitVisited();
-            vertexNode._visited = true;
+            var vertexNode = Find(start);
+            vertexNode.Visited = true;
             queue.Enqueue(vertexNode);
-
             while (queue.Count > 0)
             {
                 VertexNode curruntNode = queue.Dequeue();
-                ArcNode arcNode = curruntNode._firstArc;
-                while (arcNode != null) //访问此顶点的所有邻接点
+                ArcNode arcNode = curruntNode.FirstArc;
+                //访问该顶点的所有邻接点
+                while (arcNode != null)
                 {
-                    var nextVertex = arcNode.GetNextVertexNode();
+                    var nextVertex = arcNode.GetVertexNode();
                     func?.Invoke(curruntNode, arcNode);
-                    if (!nextVertex._visited)
+                    if (!nextVertex.Visited)
                     {
-                        queue.Enqueue(nextVertex); //进队
+                        queue.Enqueue(nextVertex);
                     }
-                    nextVertex._visited = true; //设置访问标志
-                    arcNode = arcNode._nextArc; //访问下一个邻接点
-                }
-            }
-        }
-
-        public void BFS(VertexNode v, Action<VertexNode, ArcNode, decimal> func = null) //使用递归进行深度优先遍历
-        {
-            Queue<VertexNode> queue = new Queue<VertexNode>();
-            decimal weight = 0;
-            v._visited = true; //设置访问标志
-            queue.Enqueue(v); //进队
-            while (queue.Count > 0) //只要队不为空就循环
-            {
-                VertexNode w = queue.Dequeue();
-                ArcNode node = w._firstArc;
-                weight += node._weight;
-                while (node != null) //访问此顶点的所有邻接点
-                {
-                    VertexNode nextVertex = node.GetNextVertexNode();
-                    if (!nextVertex._visited)
-                    {
-                        func?.Invoke(v, node, weight);
-                        nextVertex._visited = true; //设置访问标志
-                        queue.Enqueue(nextVertex); //进队
-                    }
-                    node = node._nextArc; //访问下一个邻接点
+                    nextVertex.Visited = true;
+                    //访问下一个邻接点
+                    arcNode = arcNode._nextArc;
                 }
             }
         }
@@ -310,18 +290,20 @@ namespace Trains.Utils
         {
             foreach (VertexNode v in _list)
             {
-                v._visited = false; //全部置为false
+                v.Visited = false; //全部置为false
             }
         }
-        #endregion
 
     }
     //表头结点（表示图的顶点）
     public class VertexNode
     {
         public readonly string _data;
-        public ArcNode _firstArc;
-        public Boolean _visited;
+
+        public ArcNode FirstArc { get; set; }
+
+        public Boolean Visited { get; set; }
+
         public VertexNode(string value)
         {
             _data = value;
@@ -343,10 +325,10 @@ namespace Trains.Utils
 
         public bool ContainsNode(string nodeData)
         {
-            var curruntNode = _firstArc;
+            var curruntNode = FirstArc;
             do
             {
-                if (curruntNode.GetNextNodeData().Equals(nodeData))
+                if (curruntNode.GetVertexNodeData().Equals(nodeData))
                 {
                     return true;
                 }
@@ -362,20 +344,23 @@ namespace Trains.Utils
     public class ArcNode
     {
         private VertexNode _vertexNode;
+
         public ArcNode _nextArc;
+
         public decimal _weight;
+
         public ArcNode(VertexNode vertex, decimal value)
         {
             _vertexNode = vertex;
             _weight = value;
         }
 
-        public string GetNextNodeData()
+        public string GetVertexNodeData()
         {
             return _vertexNode._data;
         }
 
-        public VertexNode GetNextVertexNode()
+        public VertexNode GetVertexNode()
         {
             return _vertexNode;
         }
