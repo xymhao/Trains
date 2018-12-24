@@ -4,8 +4,11 @@ VisualStudioVersion = 15.0.28307.106
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Trains", "Trains\Trains.csproj", "{C618A7E0-A103-4688-902D-0FFD3D15E6C7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainTests", "TrainTests\TrainTests.csproj", "{8972F6BC-AFAF-4C95-B144-95CF702120CB}"
+<<<<<<< Updated upstream
+=======
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainsTests", "TrainsTests\TrainsTests.csproj", "{EC00C23D-C9A6-46EB-84DD-CC667355070E}"
 EndProject
+>>>>>>> Stashed changes
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -16,10 +19,13 @@ Global
 		{C618A7E0-A103-4688-902D-0FFD3D15E6C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C618A7E0-A103-4688-902D-0FFD3D15E6C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C618A7E0-A103-4688-902D-0FFD3D15E6C7}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8972F6BC-AFAF-4C95-B144-95CF702120CB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8972F6BC-AFAF-4C95-B144-95CF702120CB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8972F6BC-AFAF-4C95-B144-95CF702120CB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8972F6BC-AFAF-4C95-B144-95CF702120CB}.Release|Any CPU.Build.0 = Release|Any CPU
+<<<<<<< Updated upstream
+=======
+		{EC00C23D-C9A6-46EB-84DD-CC667355070E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC00C23D-C9A6-46EB-84DD-CC667355070E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC00C23D-C9A6-46EB-84DD-CC667355070E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC00C23D-C9A6-46EB-84DD-CC667355070E}.Release|Any CPU.Build.0 = Release|Any CPU
+>>>>>>> Stashed changes
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
