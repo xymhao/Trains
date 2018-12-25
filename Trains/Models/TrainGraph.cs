@@ -6,13 +6,13 @@ namespace Trains
 {
     public class TrainGraph : IList<Station>
     {
-        List<Station> _stationList;
+        List<Station> stationList;
         //是否是有向图
         private bool IsDirecte { get; set; } = true;
 
         public TrainGraph(bool isDirecte)
         {
-            _stationList = new List<Station>();
+            stationList = new List<Station>();
             IsDirecte = isDirecte;
         }
 
@@ -120,13 +120,13 @@ namespace Trains
             {
                 throw new ArgumentException("插入了重复顶点！");
             }
-            _stationList.Add(item);
+            stationList.Add(item);
         }
 
         //查找指定项并返回
         public Station Find(Station item)
         {
-            foreach (Station vertex in _stationList)
+            foreach (Station vertex in stationList)
             {
                 if (vertex.Equals(item))
                 {
@@ -144,10 +144,10 @@ namespace Trains
 
         public bool Contains(Station item)
         {
-            return _stationList.Contains(item);
+            return stationList.Contains(item);
         }
 
-        public int Count => _stationList.Count;
+        public int Count => stationList.Count;
 
         public bool IsReadOnly => false;
 
@@ -155,9 +155,9 @@ namespace Trains
         {
             get
             {
-                if (index >= _stationList.Count)
+                if (index >= stationList.Count)
                     throw new IndexOutOfRangeException("索引超出了界限");
-                return _stationList[index];
+                return stationList[index];
             }
             set
             {
@@ -175,32 +175,32 @@ namespace Trains
 
         public int IndexOf(Station item)
         {
-            return _stationList.IndexOf(item);
+            return stationList.IndexOf(item);
         }
 
         public void Insert(int index, Station item)
         {
-            _stationList.Insert(index, item);
+            stationList.Insert(index, item);
         }
 
         public void RemoveAt(int index)
         {
-            _stationList.RemoveAt(index);
+            stationList.RemoveAt(index);
         }
 
         public void Clear()
         {
-            _stationList = new List<Station>();
+            stationList = new List<Station>();
         }
 
         public void CopyTo(Station[] array, int arrayIndex)
         {
-            _stationList.CopyTo(array, arrayIndex);
+            stationList.CopyTo(array, arrayIndex);
         }
 
         public bool Remove(Station item)
         {
-            return _stationList.Remove(item);
+            return stationList.Remove(item);
         }
 
         public bool Remove(string item)
@@ -210,12 +210,12 @@ namespace Trains
 
         public IEnumerator<Station> GetEnumerator()
         {
-            return _stationList.GetEnumerator();
+            return stationList.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _stationList.GetEnumerator();
+            return stationList.GetEnumerator();
         }
         #endregion
 
@@ -250,7 +250,7 @@ namespace Trains
         }
 
         //深度优先遍历
-        public void GetNumberWithCondition(string start, Func<int, string, decimal, bool> func = null, int curStops = 0, int weight = 0) 
+        public void GetNumberWithCondition(string start, Func<int, string, decimal, bool> func = null, int curStops = 0, int weight = 0)
         {
             var startStation = Find(start);
             //将visited标志全部置为false
@@ -312,7 +312,7 @@ namespace Trains
         //初始化visited标志
         private void InitVisited()
         {
-            foreach (Station v in _stationList)
+            foreach (Station v in stationList)
             {
                 v.Visited = false;
             }

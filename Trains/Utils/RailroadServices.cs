@@ -7,7 +7,7 @@ namespace Trains
     {
         private readonly TrainGraph trainGraph;
         private readonly Graph graph;
-        private readonly AdjMatrix trainMatrix;
+        private readonly TrainMatrix trainMatrix;
 
 
         public RailroadServices(Graph graph)
@@ -16,7 +16,7 @@ namespace Trains
             //初始化邻接表
             trainGraph = new TrainGraph(true, graph);
 
-            trainMatrix = new AdjMatrix(graph);
+            trainMatrix = new TrainMatrix(graph);
         }
 
         public string GetDistanceOfRoutes(string routes)

@@ -31,7 +31,6 @@ namespace Trains
             }
         }
 
-
         private void AddArc(string start, string end, decimal weight)
         {
             ArcList.ForEach(arc =>
@@ -58,30 +57,61 @@ namespace Trains
             return VertexList.Select(p => p.Name).Contains(name);
         }
 
+        public int FindVertexIDByStation(string name)
+        {
+            var vertex = VertexList.Find(p => p.Name.Equals(name));
+            if (vertex == null)
+            {
+                throw new ArgumentNullException(name, "该站点不存在！");
+            }
+            return vertex.ID;
+        }
+
+        public string FindStationByID(int id)
+        {
+            var vertex = VertexList.Find(p => p.ID.Equals(id));
+            if (vertex == null)
+            {
+                throw new ArgumentNullException(id.ToString(), "该节点不存在！");
+            }
+            return vertex.Name;
+        }
+
+        public Arc GetRouteByStartEnd(string start, string end)
+        {
+            return ArcList.Find(ar => ar.Start.Equals(start) && ar.End.Equals(end));
+        }
+
+        public decimal GetDistance(int start, int end)
+        {
+            var startStation = FindStationByID(start);
+            var endStation = FindStationByID(end);
+            var arc = GetRouteByStartEnd(startStation, endStation);
+            return arc == null ? Constant.INFINITE : arc.Weight;
+        }
     }
 
 
     public class Vertex
     {
-        public int ID { get; set; }
+        public int ID { get;  }
 
-        public string Name { get; set; }
+        public string Name { get; }
 
         public Vertex(int id, string name)
         {
             ID = id;
             Name = name;
         }
-
     }
 
     public class Arc
     {
-        public string Start { get; set; }
+        public string Start { get;  }
 
-        public string End { get; set; }
+        public string End { get; }
 
-        public decimal Weight { get; set; }
+        public decimal Weight { get; }
 
         public Arc(string start, string end, decimal weight)
         {
