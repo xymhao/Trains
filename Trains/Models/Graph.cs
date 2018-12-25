@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Trains.Models
+namespace Trains
 {
     public class Graph
     {

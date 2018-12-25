@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using Trains.Models;
 
-namespace Trains.Utils
+namespace Trains
 {
     public class AdjacencyList : IList<VertexNode>
     {
