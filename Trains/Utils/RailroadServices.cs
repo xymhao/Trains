@@ -7,7 +7,7 @@ namespace Trains
     {
         private readonly TrainGraph trainGraph;
         private readonly Graph graph;
-        private readonly AdjMatrix adjMatrix;
+        private readonly AdjMatrix trainMatrix;
 
 
         public RailroadServices(Graph graph)
@@ -16,7 +16,7 @@ namespace Trains
             //初始化邻接表
             trainGraph = new TrainGraph(true, graph);
 
-            adjMatrix = new AdjMatrix(graph);
+            trainMatrix = new AdjMatrix(graph);
         }
 
         public string GetDistanceOfRoutes(string routes)
@@ -35,7 +35,6 @@ namespace Trains
                 }
                 return count <= num;
             });
-            Console.WriteLine($"#6:{result}");
             return result;
         }
 
@@ -50,51 +49,49 @@ namespace Trains
                 }
                 return cur <= num;
             });
-            Console.WriteLine($"#7:{result}");
             return result;
         }
 
         public int GetNumberLessThanDistance(string start, string end, int num)
         {
             int result = 0;
-            trainGraph.GetNumberWithCondition(start, (count, station, weight) =>
+            trainGraph.GetNumberWithCondition(start, (count, station, distance) =>
             {
-                if (station.Equals(end) && weight < num)
+                if (station.Equals(end) && distance < num)
                 {
                     result++;
                 }
                 return count < num;
             });
-            Console.WriteLine($"#10:{result}");
             return result;
         }
 
         public string GetShortestDistance(string start, string end)
         {
             VerifyNode(start, end);
-            //构造起点start 到各个边的距离
+            //shortestDict起点到各个边的最短距离
             Dictionary<string, decimal> shortestDict = new Dictionary<string, decimal>();
             foreach (var vex in graph.VertexList)
             {
-                var value = adjMatrix.GetDistance(start, vex.Name);
+                var value = trainMatrix.GetDistance(start, vex.Name);
                 shortestDict.TryAdd(vex.Name, value);
             }
             //curStation 当前站点
             trainGraph.ShortestPath(start, (curStation, route) =>
             {
-                decimal weight = 0;
+                decimal distance = 0;
                 //当前点是起点时 weight = 0
                 if (!curStation.Equals(start))
                 {
-                    weight = shortestDict[curStation];
+                    distance = shortestDict[curStation];
                 }
-                //如果
+                //存储最小路径
                 if (shortestDict.TryGetValue(route.GetDestinationStation(), out decimal value)
-                    && value > route.Weight + weight)
+                    && value > route.Distance + distance)
                 {
-                    shortestDict[route.GetDestinationStation()] = route.Weight + weight;
+                    shortestDict[route.GetDestinationStation()] = route.Distance + distance;
                 }
-                Console.Write(string.Format(@"{0}-{1}:{2}  ", start, route.GetDestinationStation(), weight + route.Weight));
+                Console.Write(string.Format(@"{0}-{1}:{2}  ", start, route.GetDestinationStation(), distance + route.Distance));
             });
             return shortestDict[end].ToString();
         }
@@ -113,16 +110,16 @@ namespace Trains
 
         public void TestOutput()
         {
-            Console.WriteLine($"#1: { GetDistanceOfRoutes("A-B-C")}");
-            Console.WriteLine($"#2: { GetDistanceOfRoutes("A-D")}");
-            Console.WriteLine($"#3: { GetDistanceOfRoutes("A-D-C")}");
-            Console.WriteLine($"#4: { GetDistanceOfRoutes("A-E-B-C-D")}");
-            Console.WriteLine($"#5: { GetDistanceOfRoutes("A-E-D")}");
-            GetNumberWithMaximum("C", "C", 3);
-            GetNumberWithExactlyStops("A", "C", 4);
-            Console.WriteLine($"#8:{GetShortestDistance("A", "C")}");
-            Console.WriteLine($"#9:{GetShortestDistance("B", "B")}");
-            GetNumberLessThanDistance("C", "C", 30);
+            Console.WriteLine($"#1: { GetDistanceOfRoutes("A-B-C") }");
+            Console.WriteLine($"#2: { GetDistanceOfRoutes("A-D") }");
+            Console.WriteLine($"#3: { GetDistanceOfRoutes("A-D-C") }");
+            Console.WriteLine($"#4: { GetDistanceOfRoutes("A-E-B-C-D") }");
+            Console.WriteLine($"#5: { GetDistanceOfRoutes("A-E-D") }");
+            Console.WriteLine($"#6: { GetNumberWithMaximum("C", "C", 3) }");
+            Console.WriteLine($"#7: { GetNumberWithExactlyStops("A", "C", 4)}");
+            Console.WriteLine($"#8: { GetShortestDistance("A", "C") }");
+            Console.WriteLine($"#9: { GetShortestDistance("B", "B") }");
+            Console.WriteLine($"#10:{ GetNumberLessThanDistance("C", "C", 30) }");
         }
     }
 }

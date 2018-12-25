@@ -240,7 +240,7 @@ namespace Trains
                 {
                     if (arcNode.GetDestinationStation().Equals(stops[i + 1]))
                     {
-                        result += arcNode.Weight;
+                        result += arcNode.Distance;
                         break;
                     }
                     arcNode = arcNode.NextRoute;
@@ -267,7 +267,7 @@ namespace Trains
             while (node != null)
             {
                 curStops = curStops == 0 ? 1 : curStops;
-                weight += node.Weight;
+                weight += node.Distance;
                 //外置条件是否继续遍历
                 var isdfs = func?.Invoke(curStops, node.GetDestinationStation(), weight) ?? false;
                 var nextVertex = node.Station;
@@ -276,7 +276,7 @@ namespace Trains
                 {
                     DFS(nextVertex, func, curStops + 1, weight);
                 }
-                weight -= node.Weight;
+                weight -= node.Distance;
                 node = node.NextRoute;
             }
         }
@@ -374,14 +374,14 @@ namespace Trains
     {
         public Route NextRoute { get; set; }
 
-        public decimal Weight { get; }
+        public decimal Distance { get; }
 
         public Station Station { get; }
 
         public Route(Station station, decimal value)
         {
             Station = station;
-            Weight = value;
+            Distance = value;
         }
 
         public string GetDestinationStation()
