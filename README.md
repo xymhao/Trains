@@ -10,9 +10,5 @@ dotnet run
 ```
 ![示例1](/Example1.png)
 
-#### 方式二二
+#### 方式二
 - 使用Visual Studio 打开/Trains/Trains.sln，将Trains设置为启动项目，F5启动项目。
-![示例2](/Example2.png)
-
-# 例子 #
-![运行图](/Example.png)
