@@ -27,7 +27,7 @@ namespace Trains
             return matrix[startVertex, endVertex];
         }
 
-        public string GetDistanceOfRoutes(string route, Action<string> doAction = null)
+        public string GetDistanceOfRoutes(string route)
         {
             var stops = route.Split("-");
             decimal distance = 0;
@@ -37,12 +37,10 @@ namespace Trains
                 var value = GetDistance(stops[i], stops[i + 1]);
                 if (value == 0 || value.Equals(Constant.INFINITE))
                 {
-                    result = "NO SUCH ROUTE ";
-                    doAction?.Invoke("NO SUCH ROUTE ");
+                    return "NO SUCH ROUTE ";
                 }
                 distance += value;
             }
-            doAction?.Invoke(distance.ToString());
             return distance.ToString();
         }
     }

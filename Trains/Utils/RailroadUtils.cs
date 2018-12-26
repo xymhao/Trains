@@ -11,6 +11,10 @@ namespace Trains
         //邻接矩阵
         private readonly TrainMatrix trainMatrix;
 
+        /// <summary>
+        /// 构造函数
+        /// </summary>
+        /// <param name="graph">图类</param>
         public RailroadUtils(Graph graph)
         {
             this.graph = graph;
@@ -20,49 +24,78 @@ namespace Trains
             trainMatrix = new TrainMatrix(graph);
         }
 
+        /// <summary>
+        /// 获取两站之间的距离（Test 1-5）
+        /// </summary>
+        /// <param name="routes"></param>
+        /// <returns></returns>
         public string GetDistanceOfRoutes(string routes)
         {
             return trainMatrix.GetDistanceOfRoutes(routes);
         }
 
+        /// <summary>
+        /// 经过站点数最大值为num(Test 6)
+        /// </summary>
+        /// <param name="start">始发站</param>
+        /// <param name="end">终点站</param>
+        /// <param name="num">最大站数</param>
+        /// <returns></returns>
         public int GetNumberWithMaximum(string start, string end, int num)
         {
             int result = 0;
-            trainGraph.GetNumberWithCondition(start, (count, station, weight) =>
+            trainGraph.GetNumberWithCondition(start, (distance, routes) =>
             {
-                if (station.Equals(end) && count <= num)
+                var stopsNumber = routes.Count - 1;
+                if (routes.Peek().Equals(end) && stopsNumber <= num)
                 {
                     result++;
                 }
-                return count <= num;
+                return stopsNumber <= num;
             });
             return result;
         }
 
+        /// <summary>
+        /// 刚好到达终点的站点数为num（Test 7）
+        /// </summary>
+        /// <param name="start">始发站</param>
+        /// <param name="end">终点站</param>
+        /// <param name="num">站点数</param>
+        /// <returns></returns>
         public int GetNumberWithExactlyStops(string start, string end, int num)
         {
             int result = 0;
-            trainGraph.GetNumberWithCondition(start, (cur, station, weight) =>
+            string stations = start;
+            trainGraph.GetNumberWithCondition(start, (weight, routes) =>
             {
-                if (station.Equals(end) && cur == num)
+                var stopsNumber = routes.Count - 1;
+                if (routes.Peek().Equals(end) && stopsNumber == num)
                 {
                     result++;
                 }
-                return cur <= num;
+                return stopsNumber <= num;
             });
             return result;
         }
 
+        /// <summary>
+        /// 获取两站之间站点数小于num的方案总数 (Test 10)
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <param name="num"></param>
+        /// <returns></returns>
         public int GetNumberLessThanDistance(string start, string end, int num)
         {
             int result = 0;
-            trainGraph.GetNumberWithCondition(start, (count, station, distance) =>
+            trainGraph.GetNumberWithCondition(start, (distance, routes) =>
             {
-                if (station.Equals(end) && distance < num)
+                if (routes.Peek().Equals(end) && distance < num)
                 {
                     result++;
                 }
-                return count < num;
+                return distance < num;
             });
             return result;
         }
@@ -78,21 +111,21 @@ namespace Trains
                 shortestDict.TryAdd(vex.Name, value);
             }
             //curStation 当前站点
-            trainGraph.ShortestPath(start, (curStation, route) =>
+            trainGraph.ShortestPath(start, (curStation, desStation, distance) =>
             {
-                decimal distance = 0;
+                decimal shortestDistance = 0;
                 //当前点是起点时 weight = 0
                 if (!curStation.Equals(start))
                 {
-                    distance = shortestDict[curStation];
+                    shortestDistance = shortestDict[curStation];
                 }
                 //存储最小路径
-                if (shortestDict.TryGetValue(route.GetDestinationStation(), out decimal value)
-                    && value > route.Distance + distance)
+                if (shortestDict.TryGetValue(desStation, out decimal value)
+                    && value > distance + shortestDistance)
                 {
-                    shortestDict[route.GetDestinationStation()] = route.Distance + distance;
+                    shortestDict[desStation] = distance + shortestDistance;
                 }
-                Console.Write(string.Format(@"{0}-{1}:{2}  ", start, route.GetDestinationStation(), distance + route.Distance));
+                Console.Write(string.Format(@"{0}-{1}:{2}  ", start, desStation, shortestDistance + distance));
             });
             return shortestDict[end].ToString();
         }

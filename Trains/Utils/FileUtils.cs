@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace Trains.Utils
 {
@@ -14,17 +12,25 @@ namespace Trains.Utils
             if (string.IsNullOrEmpty(path))
             {
                 path = Path.GetFullPath(Constant.DEFAULT_GRAPH);
+                path = path.Replace(@"\bin\Debug\netcoreapp2.1", "");
+                Console.WriteLine($"The file path is {path}");
             }
-
-            using (StreamReader sr = File.OpenText(path))
+            if (!File.Exists(path))
             {
-                string fileStr = string.Empty;
-                while ((fileStr = sr.ReadLine()) != null)
+                Console.WriteLine(@"The file path doesn't exist.");
+                return string.Empty;
+            }
+            else
+            {
+                using (StreamReader sr = File.OpenText(path))
                 {
-                    data += fileStr;
+                    string fileStr = string.Empty;
+                    while ((fileStr = sr.ReadLine()) != null)
+                    {
+                        data += fileStr.Trim();
+                    }
                 }
             }
-            Console.WriteLine(string.Format(@"The graph is {0}", data));
             return data;
         }
     }

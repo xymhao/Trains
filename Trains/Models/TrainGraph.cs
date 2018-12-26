@@ -250,38 +250,41 @@ namespace Trains
         }
 
         //深度优先遍历
-        public void GetNumberWithCondition(string start, Func<int, string, decimal, bool> func = null, int curStops = 0, int weight = 0)
+        public void GetNumberWithCondition(string start, Func<decimal, Stack<string>, bool> func = null, int weight = 0)
         {
             var startStation = Find(start);
             //将visited标志全部置为false
             InitVisited();
             //从第一个顶点开始遍历
-            DFS(startStation, func, curStops);
+            Stack<string> stack = new Stack<string>();
+            stack.Push(startStation.GetStation());
+            DFS(startStation, func, stack:stack);
         }
 
         //使用递归进行深度优先遍历
-        private void DFS(Station startStation, Func<int, string, decimal, bool> func = null, int curStops = 0, decimal weight = 0)
+        private void DFS(Station startStation, Func<decimal, Stack<string>,bool> func = null, decimal weight = 0, Stack<string> stack = null)
         {
             startStation.Visited = true;
-            Route node = startStation.FirstRoute;
-            while (node != null)
+            Route route = startStation.FirstRoute;
+            while (route != null)
             {
-                curStops = curStops == 0 ? 1 : curStops;
-                weight += node.Distance;
+                weight += route.Distance;
+                stack?.Push(route.GetDestinationStation());
                 //外置条件是否继续遍历
-                var isdfs = func?.Invoke(curStops, node.GetDestinationStation(), weight) ?? false;
-                var nextVertex = node.Station;
+                var isdfs = func?.Invoke(weight, stack) ?? false;
+                var nextVertex = route.Station;
                 //如果邻接点未被访问，则递归访问它的边
                 if (!nextVertex.Visited || isdfs)
                 {
-                    DFS(nextVertex, func, curStops + 1, weight);
+                    DFS(nextVertex, func, weight, stack);
                 }
-                weight -= node.Distance;
-                node = node.NextRoute;
+                stack.Pop();
+                weight -= route.Distance;
+                route = route.NextRoute;
             }
         }
 
-        public void ShortestPath(string start, Action<string, Route> func = null)
+        public void ShortestPath(string start, Action<string, string, decimal> func = null)
         {
             Station vertexNode = Find(start);
             Queue<Station> queue = new Queue<Station>();
@@ -292,19 +295,19 @@ namespace Trains
             while (queue.Count > 0)
             {
                 Station curruntStation = queue.Dequeue();
-                Route arcNode = curruntStation.FirstRoute;
+                Route route = curruntStation.FirstRoute;
                 //访问此顶点的所有邻接点
-                while (arcNode != null)
+                while (route != null)
                 {
-                    var nextVertex = arcNode.Station;
-                    func?.Invoke(curruntStation.GetStation(), arcNode);
+                    var nextVertex = route.Station;
+                    func?.Invoke(curruntStation.GetStation(), route.GetDestinationStation(), route.Distance);
                     if (!nextVertex.Visited)
                     {
                         queue.Enqueue(nextVertex);
                     }
                     nextVertex.Visited = true;
                     //访问下一个邻接点
-                    arcNode = arcNode.NextRoute;
+                    route = route.NextRoute;
                 }
             }
         }

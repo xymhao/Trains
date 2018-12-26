@@ -27,7 +27,7 @@ namespace Trains
             }
             catch
             {
-                throw new Exception(@"输入有误");
+                throw new Exception(@"输入值有误！");
             }
         }
 
