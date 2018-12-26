@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Trains
 {
@@ -29,22 +27,23 @@ namespace Trains
             return matrix[startVertex, endVertex];
         }
 
-        public bool GetRoutResult(string route, Action<string> doAction)
+        public string GetDistanceOfRoutes(string route, Action<string> doAction = null)
         {
             var stops = route.Split("-");
             decimal distance = 0;
+            string result = string.Empty;
             for (var i = 0; i < stops.Length - 1; i++)
             {
                 var value = GetDistance(stops[i], stops[i + 1]);
                 if (value == 0 || value.Equals(Constant.INFINITE))
                 {
-                    doAction("NO SUCH ROUTE ");
-                    return false;
+                    result = "NO SUCH ROUTE ";
+                    doAction?.Invoke("NO SUCH ROUTE ");
                 }
                 distance += value;
             }
-            doAction(distance.ToString());
-            return true;
+            doAction?.Invoke(distance.ToString());
+            return distance.ToString();
         }
     }
 }

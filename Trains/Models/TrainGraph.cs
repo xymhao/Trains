@@ -16,7 +16,7 @@ namespace Trains
             IsDirecte = isDirecte;
         }
 
-        public TrainGraph(bool isDirecte, Graph graph) : this(isDirecte)
+        public TrainGraph(Graph graph, bool isDirecte = true) : this(isDirecte)
         {
             foreach (var st in graph.VertexList)
             {

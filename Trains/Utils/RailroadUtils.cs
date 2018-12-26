@@ -3,25 +3,26 @@ using System.Collections.Generic;
 
 namespace Trains
 {
-    public class RailroadServices
+    public class RailroadUtils
     {
-        private readonly TrainGraph trainGraph;
         private readonly Graph graph;
+        //邻接表
+        private readonly TrainGraph trainGraph;
+        //邻接矩阵
         private readonly TrainMatrix trainMatrix;
 
-
-        public RailroadServices(Graph graph)
+        public RailroadUtils(Graph graph)
         {
             this.graph = graph;
             //初始化邻接表
-            trainGraph = new TrainGraph(true, graph);
+            trainGraph = new TrainGraph(graph);
 
             trainMatrix = new TrainMatrix(graph);
         }
 
         public string GetDistanceOfRoutes(string routes)
         {
-            return trainGraph.GetDistanceOfRoutes(routes);
+            return trainMatrix.GetDistanceOfRoutes(routes);
         }
 
         public int GetNumberWithMaximum(string start, string end, int num)
