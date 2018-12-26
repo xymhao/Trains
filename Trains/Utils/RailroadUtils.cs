@@ -5,8 +5,10 @@ namespace Trains
 {
     public class RailroadUtils
     {
-        private readonly TrainGraph trainGraph;
         private readonly Graph graph;
+        //邻接表
+        private readonly TrainGraph trainGraph;
+        //邻接矩阵
         private readonly TrainMatrix trainMatrix;
 
         public RailroadUtils(Graph graph)
