@@ -12,5 +12,7 @@
 ![示例1](/Example2.png)
 
 # 工程结构 #
-![示例1](/Example4.png)
+- 项目结构图
+![示例](/Example4.png)
+- UML 类图
 ![UML](/Example5.png)
