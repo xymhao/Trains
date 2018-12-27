@@ -12,7 +12,7 @@ namespace Trains
             {
                 try
                 {
-                    Console.WriteLine("Please input the text file path \n(Pressing enter directly will load the default graph) ");
+                    Console.WriteLine("Please input the text file path \n(Pressing enter directly will load the default graph data) ");
                     Console.Write(@"File Path:");
                     var path = Console.ReadLine();
                     //通过绝对路劲获取graph
