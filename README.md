@@ -1,4 +1,4 @@
-# 环境安装 #
+﻿# 环境安装 #
 - [.NET Core SDK 2.1](https://dotnet.microsoft.com/download)
 
 # 快速开始 #
@@ -13,3 +13,4 @@
 
 # 工程结构 #
 ![示例1](/Example4.png)
+![UML](/Example5.png)
