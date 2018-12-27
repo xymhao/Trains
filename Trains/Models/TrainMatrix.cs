@@ -4,8 +4,8 @@ namespace Trains
 {
     public class TrainMatrix
     {
-        public Graph graph;
-        public decimal[,] matrix;
+        private Graph graph;
+        private decimal[,] matrix;
 
         public TrainMatrix(Graph graph)
         {

@@ -26,7 +26,7 @@ namespace TrainTests
         public void Get_Station_FindValue()
         {
             trainGraph.AddStation("A");
-            Assert.AreEqual("A", trainGraph[0].GetStation());
+            Assert.AreEqual("A", trainGraph[0].Name);
         }
 
         [Test]

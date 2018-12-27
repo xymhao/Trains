@@ -111,7 +111,7 @@ namespace Trains
                 shortestDict.TryAdd(vex.Name, value);
             }
             //curStation 当前站点
-            trainGraph.ShortestPath(start, (curStation, desStation, distance) =>
+            trainGraph.GetShortestPath(start, (curStation, desStation, distance) =>
             {
                 decimal shortestDistance = 0;
                 //当前点是起点时 weight = 0

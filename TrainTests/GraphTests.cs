@@ -3,7 +3,7 @@ using NUnit.Framework;
 using NUnit.Framework.Constraints;
 using Trains;
 
-namespace TrainsTests
+namespace TrainTests
 {
     public class GraphTests
     {

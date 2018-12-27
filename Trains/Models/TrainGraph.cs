@@ -91,22 +91,22 @@ namespace Trains
             }
             else
             {
-                Route tmp, arcNode = startStation.FirstRoute;
+                Route tmp, route = startStation.FirstRoute;
                 //找末尾边节点添加边
                 do
                 {   //检查是否添加了重复边
-                    VerifyArcNode(endStation, arcNode);
-                    tmp = arcNode;
-                    arcNode = arcNode.NextRoute;
-                } while (arcNode != null);
+                    VerifyRoute(endStation, route);
+                    tmp = route;
+                    route = route.NextRoute;
+                } while (route != null);
                 //设置边节点
                 tmp.SetNextRoute(endStation, weight);
             }
         }
 
-        private static void VerifyArcNode(Station endVertex, Route arcNode)
+        private static void VerifyRoute(Station endStation, Route route)
         {
-            if (arcNode.GetDestinationStation().Equals(endVertex.GetStation()))
+            if (route.GetDestinationStation().Equals(endStation.Name))
             {
                 throw new ArgumentException("添加了重复的边！");
             }
@@ -257,7 +257,7 @@ namespace Trains
             InitVisited();
             //从第一个顶点开始遍历
             Stack<string> stack = new Stack<string>();
-            stack.Push(startStation.GetStation());
+            stack.Push(startStation.Name);
             DFS(startStation, func, stack:stack);
         }
 
@@ -284,7 +284,7 @@ namespace Trains
             }
         }
 
-        public void ShortestPath(string start, Action<string, string, decimal> func = null)
+        public void GetShortestPath(string start, Action<string, string, decimal> func = null)
         {
             Station vertexNode = Find(start);
             Queue<Station> queue = new Queue<Station>();
@@ -300,7 +300,7 @@ namespace Trains
                 while (route != null)
                 {
                     var nextVertex = route.Station;
-                    func?.Invoke(curruntStation.GetStation(), route.GetDestinationStation(), route.Distance);
+                    func?.Invoke(curruntStation.Name, route.GetDestinationStation(), route.Distance);
                     if (!nextVertex.Visited)
                     {
                         queue.Enqueue(nextVertex);
@@ -325,20 +325,15 @@ namespace Trains
     //表头结点（表示图的顶点）
     public class Station
     {
-        private readonly string _data;
-
         public Boolean Visited { get; set; }
 
         public Route FirstRoute { get; set; }
 
+        public string Name { get; }
+
         public Station(string value)
         {
-            _data = value;
-        }
-
-        public string GetStation()
-        {
-            return _data;
+            Name = value;
         }
 
         //重写equals方法
@@ -351,7 +346,7 @@ namespace Trains
             else
             {
                 Station vertex = obj as Station;
-                return (_data == vertex._data);
+                return (Name == vertex.Name);
             }
         }
 
@@ -369,7 +364,7 @@ namespace Trains
             return false;
         }
 
-        public override int GetHashCode() => _data.GetHashCode();
+        public override int GetHashCode() => Name.GetHashCode();
     }
 
     //表结点（表示图的边）
@@ -389,7 +384,7 @@ namespace Trains
 
         public string GetDestinationStation()
         {
-            return Station.GetStation();
+            return Station.Name;
         }
 
         public void SetNextRoute(Station vertex, decimal weight)

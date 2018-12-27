@@ -6,7 +6,7 @@ namespace Trains
 {
     public class Graph
     {
-        int _index = 0;
+        private int index = 0;
         public List<Vertex> VertexList { get; set; } = new List<Vertex>();
         public List<Arc> ArcList { get; set; } = new List<Arc>();
 
@@ -47,8 +47,8 @@ namespace Trains
         {
             if (!VertexContains(vertex))
             {
-                VertexList.Add(new Vertex(_index, vertex));
-                _index++;
+                VertexList.Add(new Vertex(index, vertex));
+                index++;
             }
         }
 
