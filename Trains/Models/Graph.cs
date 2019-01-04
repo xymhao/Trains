@@ -90,34 +90,4 @@ namespace Trains
             return arc == null ? Constant.INFINITE : arc.Weight;
         }
     }
-
-
-    public class Vertex
-    {
-        public int ID { get;  }
-
-        public string Name { get; }
-
-        public Vertex(int id, string name)
-        {
-            ID = id;
-            Name = name;
-        }
-    }
-
-    public class Arc
-    {
-        public string Start { get;  }
-
-        public string End { get; }
-
-        public decimal Weight { get; }
-
-        public Arc(string start, string end, decimal weight)
-        {
-            Start = start;
-            End = end;
-            Weight = weight;
-        }
-    }
 }
