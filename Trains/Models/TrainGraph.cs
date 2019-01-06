@@ -28,6 +28,20 @@ namespace Trains
             }
         }
 
+        public TrainGraph(string graphStr, bool isDirecte = true) : this(isDirecte)
+        {
+            var graphArr = graphStr.Split(@",");
+            foreach (var g in graphArr)
+            {
+                var start = g[0].ToString();
+                var end = g[1].ToString();
+                var weight = Convert.ToDecimal(g.Substring(2, g.Length - 2));
+                AddStation(start);
+                AddStation(end);
+                AddRoute(start, end, weight);
+            }
+        }
+
         public void AddStation(string item)
         {
             Add(new Station(item));

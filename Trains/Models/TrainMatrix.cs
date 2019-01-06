@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Trains
 {
@@ -6,6 +7,9 @@ namespace Trains
     {
         private Graph graph;
         private decimal[,] matrix;
+        private int index = 0;
+        public List<Vertex> VertexList { get; set; } = new List<Vertex>();
+        public List<Arc> ArcList { get; set; } = new List<Arc>();
 
         public TrainMatrix(Graph graph)
         {
