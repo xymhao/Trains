@@ -6,7 +6,7 @@ namespace Trains
 {
     public class Graph
     {
-        int _index = 0;
+        private int index = 0;
         public List<Vertex> VertexList { get; set; } = new List<Vertex>();
         public List<Arc> ArcList { get; set; } = new List<Arc>();
 
@@ -27,10 +27,9 @@ namespace Trains
             }
             catch
             {
-                throw new Exception(@"输入有误");
+                throw new Exception(@"输入值有误！");
             }
         }
-
 
         private void AddArc(string start, string end, decimal weight)
         {
@@ -48,8 +47,8 @@ namespace Trains
         {
             if (!VertexContains(vertex))
             {
-                VertexList.Add(new Vertex(_index, vertex));
-                _index++;
+                VertexList.Add(new Vertex(index, vertex));
+                index++;
             }
         }
 
@@ -58,36 +57,37 @@ namespace Trains
             return VertexList.Select(p => p.Name).Contains(name);
         }
 
-    }
-
-
-    public class Vertex
-    {
-        public int ID { get; set; }
-
-        public string Name { get; set; }
-
-        public Vertex(int id, string name)
+        public int FindVertexIDByStation(string name)
         {
-            ID = id;
-            Name = name;
+            var vertex = VertexList.Find(p => p.Name.Equals(name));
+            if (vertex == null)
+            {
+                throw new ArgumentNullException(name, "该站点不存在！");
+            }
+            return vertex.ID;
         }
 
-    }
-
-    public class Arc
-    {
-        public string Start { get; set; }
-
-        public string End { get; set; }
-
-        public decimal Weight { get; set; }
-
-        public Arc(string start, string end, decimal weight)
+        public string FindStationByID(int id)
         {
-            Start = start;
-            End = end;
-            Weight = weight;
+            var vertex = VertexList.Find(p => p.ID.Equals(id));
+            if (vertex == null)
+            {
+                throw new ArgumentNullException(id.ToString(), "该节点不存在！");
+            }
+            return vertex.Name;
+        }
+
+        public Arc GetRouteByStartEnd(string start, string end)
+        {
+            return ArcList.Find(ar => ar.Start.Equals(start) && ar.End.Equals(end));
+        }
+
+        public decimal GetDistance(int start, int end)
+        {
+            var startStation = FindStationByID(start);
+            var endStation = FindStationByID(end);
+            var arc = GetRouteByStartEnd(startStation, endStation);
+            return arc == null ? Constant.INFINITE : arc.Weight;
         }
     }
 }
