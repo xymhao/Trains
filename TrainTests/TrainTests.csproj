@@ -16,4 +16,7 @@
     <ProjectReference Include="..\Trains\Trains.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Remove="GraphTestss.cs" />
+  </ItemGroup>
 </Project>
