@@ -13,7 +13,7 @@ namespace TrainTests
         public void Setup()
         {
             var graph = new Graph("AB5,BC4,CD8,DC8,DE6,AD5,CE2,EB3,AE7");
-            railroadUtils = new RailroadUtils(graph);
+            railroadUtils = new RailroadUtils("AB5,BC4,CD8,DC8,DE6,AD5,CE2,EB3,AE7");
         }
 
         [Test]
