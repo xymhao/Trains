@@ -5,7 +5,6 @@ namespace Trains
 {
     public class RailroadUtils
     {
-        private readonly Graph graph;
         //邻接表
         private readonly TrainGraph trainGraph;
         //邻接矩阵
@@ -15,9 +14,8 @@ namespace Trains
         /// 构造函数
         /// </summary>
         /// <param name="graph">图类</param>
-        public RailroadUtils(Graph graph)
+        public RailroadUtils(string graph)
         {
-            this.graph = graph;
             //初始化邻接表
             trainGraph = new TrainGraph(graph);
 
@@ -105,7 +103,7 @@ namespace Trains
             VerifyNode(start, end);
             //shortestDict起点到各个边的最短距离
             Dictionary<string, decimal> shortestDict = new Dictionary<string, decimal>();
-            foreach (var vex in graph.VertexList)
+            foreach (var vex in trainMatrix.VertexList)
             {
                 var value = trainMatrix.GetDistance(start, vex.Name);
                 shortestDict.TryAdd(vex.Name, value);
