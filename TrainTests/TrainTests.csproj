@@ -18,5 +18,6 @@
 
   <ItemGroup>
     <Compile Remove="GraphTestss.cs" />
+    <Compile Remove="AdjacencyListTests.cs" />
   </ItemGroup>
 </Project>
