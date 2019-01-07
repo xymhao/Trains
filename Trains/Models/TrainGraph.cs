@@ -36,8 +36,15 @@ namespace Trains
                 var start = g[0].ToString();
                 var end = g[1].ToString();
                 var weight = Convert.ToDecimal(g.Substring(2, g.Length - 2));
-                AddStation(start);
-                AddStation(end);
+
+                if(!Contains(Find(start)))
+                {
+                    AddStation(start);
+                }
+                if(!Contains(Find(end)))
+                {
+                    AddStation(end);
+                }
                 AddRoute(start, end, weight);
             }
         }
