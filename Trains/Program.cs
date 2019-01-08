@@ -23,7 +23,7 @@ namespace Trains
                         //构造图
                         var graph = new Graph(graphData);
                         //铁路系统工具类
-                        RailroadUtils server = new RailroadUtils(graphData);
+                        Railroad server = new Railroad(graphData);
                         server.TestOutput();
                     }
                     Console.Write("\nContinue(Y/N)?:");

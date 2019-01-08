@@ -305,7 +305,7 @@ namespace Trains
             }
         }
 
-        public void GetShortestPath(string start, Action<string, string, decimal> func = null)
+        public void GetPath(string start, Action<string, string, decimal> func = null)
         {
             Station vertexNode = Find(start);
             Queue<Station> queue = new Queue<Station>();

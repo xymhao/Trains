@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Trains
 {
-    public class RailroadUtils
+    public class Railroad
     {
         //邻接表
         private readonly TrainGraph trainGraph;
@@ -14,7 +14,7 @@ namespace Trains
         /// 构造函数
         /// </summary>
         /// <param name="graph">图类</param>
-        public RailroadUtils(string graph)
+        public Railroad(string graph)
         {
             //初始化邻接表
             trainGraph = new TrainGraph(graph);
@@ -29,7 +29,8 @@ namespace Trains
         /// <returns></returns>
         public string GetDistanceOfRoutes(string routes)
         {
-            return trainMatrix.GetDistanceOfRoutes(routes);
+            var distance = trainMatrix.GetDistanceOfRoutes(routes);
+            return distance.Equals(Constant.INFINITE) ? "NO SUCH ROUTE" : distance.ToString();
         }
 
         /// <summary>
@@ -50,6 +51,34 @@ namespace Trains
                     result++;
                 }
                 return stopsNumber <= num;
+            });
+            return result;
+        }
+
+        public string GetDuration(string routes)
+        {
+            var routeArr = routes.Split("-");
+            var distance = trainMatrix.GetDistanceOfRoutes(routes);
+            if(distance.Equals(Constant.INFINITE))
+            {
+                return "NO SUCH ROUTE";
+            }
+            var duration = (routeArr.Length - 2) * Constant.UNIT_STATION + Convert.ToDecimal(distance) * Constant.UNIT_DISTANCE;
+            return duration.ToString();
+        }
+
+        public int GetNumberWithMaximumDuration(string start, string end, int maxinum)
+        {
+            int result = 0;
+            trainGraph.GetNumberWithCondition(start, (distance, routes) =>
+            {
+                var stopsNumber = routes.Count - 1;
+                var duration = (routes.Count - 2) * Constant.UNIT_STATION + distance * Constant.UNIT_DISTANCE;
+                if (routes.Peek().Equals(end) && duration <= maxinum)
+                {
+                    result++;
+                }
+                return duration <= maxinum;
             });
             return result;
         }
@@ -109,7 +138,7 @@ namespace Trains
                 shortestDict.TryAdd(vex.Name, value);
             }
             //curStation 当前站点
-            trainGraph.GetShortestPath(start, (curStation, desStation, distance) =>
+            trainGraph.GetPath(start, (curStation, desStation, distance) =>
             {
                 decimal shortestDistance = 0;
                 //当前点是起点时 weight = 0
@@ -120,6 +149,36 @@ namespace Trains
                 //存储最小路径
                 if (shortestDict.TryGetValue(desStation, out decimal value)
                     && value > distance + shortestDistance)
+                {
+                    shortestDict[desStation] = distance + shortestDistance;
+                }
+                Console.Write(string.Format(@"{0}-{1}:{2}  ", start, desStation, shortestDistance + distance));
+            });
+            return shortestDict[end].ToString();
+        }
+
+        public string GetLongtDistance(string start, string end)
+        {
+            VerifyNode(start, end);
+            //shortestDict起点到各个边的最短距离
+            Dictionary<string, decimal> shortestDict = new Dictionary<string, decimal>();
+            foreach (var vex in trainMatrix.VertexList)
+            {
+                var value = trainMatrix.GetDistance(start, vex.Name);
+                shortestDict.TryAdd(vex.Name, value);
+            }
+            //curStation 当前站点
+            trainGraph.GetPath(start, (curStation, desStation, distance) =>
+            {
+                decimal shortestDistance = 0;
+                //当前点是起点时 weight = 0
+                if (!curStation.Equals(start))
+                {
+                    shortestDistance = shortestDict[curStation];
+                }
+                //存储最小路径
+                if (shortestDict.TryGetValue(desStation, out decimal value)
+                    && value < distance + shortestDistance)
                 {
                     shortestDict[desStation] = distance + shortestDistance;
                 }

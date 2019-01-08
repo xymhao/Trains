@@ -10,5 +10,10 @@ namespace Trains
         public const int INFINITE = int.MaxValue;
 
         public const string DEFAULT_GRAPH = @"./graph.txt";
+
+        public const int UNIT_DISTANCE = 1;
+
+        public const int UNIT_STATION = 2;
+
     }
 }

@@ -106,21 +106,20 @@ namespace Trains
             return ArcList.Find(ar => ar.Start.Equals(start) && ar.End.Equals(end));
         }
 
-        public string GetDistanceOfRoutes(string route)
+        public decimal GetDistanceOfRoutes(string route)
         {
             var stops = route.Split("-");
             decimal distance = 0;
-            string result = string.Empty;
             for (var i = 0; i < stops.Length - 1; i++)
             {
                 var value = GetDistance(stops[i], stops[i + 1]);
                 if (value == 0 || value.Equals(Constant.INFINITE))
                 {
-                    return "NO SUCH ROUTE ";
+                    return Constant.INFINITE;
                 }
                 distance += value;
             }
-            return distance.ToString();
+            return distance;
         }
     }
 }
