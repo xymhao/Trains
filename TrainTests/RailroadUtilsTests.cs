@@ -6,7 +6,7 @@ using Trains;
 
 namespace TrainTests
 {
-    public class RailroadUtilsTests
+    public class RailroadTests
     {
         private Railroad railroad;
         [SetUp]
@@ -32,14 +32,14 @@ namespace TrainTests
         [Test]
         public void GetNumberWithMaximumTests()
         {
-            var result = railroad.GetNumberWithMaximum("C", "C", 3);
+            var result = railroad.GetNumberOfRoutes("C", "C", 3, new LessThanCondtion());
             Assert.AreEqual(2, result);
         }
 
         [Test]
         public void GetNumberWithExactlyStopsTests()
         {
-            var result = railroad.GetNumberWithExactlyStops("A", "C", 4);
+            var result = railroad.GetNumberOfRoutes("A", "C", 4, new EqualCondition());
             Assert.AreEqual(3, result);
 
         }
@@ -47,7 +47,7 @@ namespace TrainTests
         [Test]
         public void GetNumberLessThanDistanceTests()
         {
-            var result = railroad.GetNumberLessThanDistance("C", "C", 30);
+            var result = railroad.GetNumberOfDistance("C", "C", 30, new LessThanCondtion());
             Assert.AreEqual(7, result);
         }
 

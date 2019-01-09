@@ -33,24 +33,17 @@ namespace Trains
             return distance.Equals(Constant.INFINITE) ? "NO SUCH ROUTE" : distance.ToString();
         }
 
-        /// <summary>
-        /// 经过站点数最大值为num(Test 6)
-        /// </summary>
-        /// <param name="start">始发站</param>
-        /// <param name="end">终点站</param>
-        /// <param name="num">最大站数</param>
-        /// <returns></returns>
-        public int GetNumberWithMaximum(string start, string end, int num)
+        public int GetNumberOfRoutes(string start, string end, int num, OPCondition op)
         {
             int result = 0;
             trainGraph.GetNumberWithCondition(start, (distance, routes) =>
             {
                 var stopsNumber = routes.Count - 1;
-                if (routes.Peek().Equals(end) && stopsNumber <= num)
+                if (routes.Peek().Equals(end) && op.GetConditionResult(num, stopsNumber))
                 {
                     result++;
                 }
-                return stopsNumber <= num;
+                return op.GetConditionResult(num, stopsNumber);
             });
             return result;
         }
@@ -84,45 +77,22 @@ namespace Trains
         }
 
         /// <summary>
-        /// 刚好到达终点的站点数为num（Test 7）
-        /// </summary>
-        /// <param name="start">始发站</param>
-        /// <param name="end">终点站</param>
-        /// <param name="num">站点数</param>
-        /// <returns></returns>
-        public int GetNumberWithExactlyStops(string start, string end, int num)
-        {
-            int result = 0;
-            string stations = start;
-            trainGraph.GetNumberWithCondition(start, (weight, routes) =>
-            {
-                var stopsNumber = routes.Count - 1;
-                if (routes.Peek().Equals(end) && stopsNumber == num)
-                {
-                    result++;
-                }
-                return stopsNumber <= num;
-            });
-            return result;
-        }
-
-        /// <summary>
         /// 获取两站之间站点数小于num的方案总数 (Test 10)
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
         /// <param name="num"></param>
         /// <returns></returns>
-        public int GetNumberLessThanDistance(string start, string end, int num)
+        public int GetNumberOfDistance(string start, string end, int num, OPCondition op)
         {
             int result = 0;
             trainGraph.GetNumberWithCondition(start, (distance, routes) =>
             {
-                if (routes.Peek().Equals(end) && distance < num)
+                if (routes.Peek().Equals(end) && op.GetConditionResult(num, Convert.ToInt32(distance)))
                 {
                     result++;
                 }
-                return distance < num;
+                return op.GetConditionResult(num, Convert.ToInt32(distance));
             });
             return result;
         }
@@ -206,11 +176,14 @@ namespace Trains
             Console.WriteLine($"#3: { GetDistanceOfRoutes("A-D-C") }");
             Console.WriteLine($"#4: { GetDistanceOfRoutes("A-E-B-C-D") }");
             Console.WriteLine($"#5: { GetDistanceOfRoutes("A-E-D") }");
-            Console.WriteLine($"#6: { GetNumberWithMaximum("C", "C", 3) }");
-            Console.WriteLine($"#7: { GetNumberWithExactlyStops("A", "C", 4)}");
+            ;
+            Console.WriteLine($"#6: { GetNumberOfRoutes("C", "C", 3, new LessThanAndEqualCondtion()) }");
+            Console.WriteLine($"#6: { GetNumberOfRoutes("A", "C", 4, new EqualCondition()) }");
+            //Console.WriteLine($"#6: { GetNumberWithMaximum("C", "C", 3) }");
+            //Console.WriteLine($"#7: { GetNumberWithExactlyStops("A", "C", 4)}");
             Console.WriteLine($"#8: { GetShortestDistance("A", "C") }");
             Console.WriteLine($"#9: { GetShortestDistance("B", "B") }");
-            Console.WriteLine($"#10:{ GetNumberLessThanDistance("C", "C", 30) }");
+            Console.WriteLine($"#10:{ GetNumberOfDistance("C", "C", 30, new LessThanCondtion()) }");
         }
     }
 }
