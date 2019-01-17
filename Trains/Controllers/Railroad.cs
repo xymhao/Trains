@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using Trains.Interfaces;
 
 namespace Trains
 {
     public class Railroad
     {
-        //邻接表
-        private readonly TrainGraph trainGraph;
+        private IServices service;
         //邻接矩阵
         private readonly TrainMatrix trainMatrix;
 
@@ -16,9 +16,8 @@ namespace Trains
         /// <param name="graph">图类</param>
         public Railroad(string graph)
         {
-            //初始化邻接表
-            trainGraph = new TrainGraph(graph);
-
+            //邻接表
+            service = new TrainGraph(graph);
             trainMatrix = new TrainMatrix(graph);
         }
 
@@ -36,7 +35,7 @@ namespace Trains
         public int GetNumberOfRoutes(string start, string end, int num, IOPCondition op)
         {
             int result = 0;
-            trainGraph.GetNumberWithCondition(start, (distance, routes) =>
+            service.GetNumberWithCondition(start, (distance, routes) =>
             {
                 var stopsNumber = routes.Count - 1;
                 if (routes.Peek().Equals(end) && op.GetConditionResult(num, stopsNumber))
@@ -63,7 +62,7 @@ namespace Trains
         public int GetNumberWithMaximumDuration(string start, string end, int maxinum)
         {
             int result = 0;
-            trainGraph.GetNumberWithCondition(start, (distance, routes) =>
+            service.GetNumberWithCondition(start, (distance, routes) =>
             {
                 var stopsNumber = routes.Count - 1;
                 var duration = (routes.Count - 2) * Constant.UNIT_STATION + distance * Constant.UNIT_DISTANCE;
@@ -86,7 +85,7 @@ namespace Trains
         public int GetNumberOfDistance(string start, string end, int num, IOPCondition op)
         {
             int result = 0;
-            trainGraph.GetNumberWithCondition(start, (distance, routes) =>
+            service.GetNumberWithCondition(start, (distance, routes) =>
             {
                 if (routes.Peek().Equals(end) && op.GetConditionResult(num, Convert.ToInt32(distance)))
                 {
@@ -108,7 +107,7 @@ namespace Trains
                 shortestDict.TryAdd(vex.Name, value);
             }
             //curStation 当前站点
-            trainGraph.GetPath(start, (curStation, desStation, distance) =>
+            service.GetPath(start, (curStation, desStation, distance) =>
             {
                 decimal shortestDistance = 0;
                 //当前点是起点时 weight = 0
@@ -138,7 +137,7 @@ namespace Trains
                 shortestDict.TryAdd(vex.Name, value);
             }
             //curStation 当前站点
-            trainGraph.GetPath(start, (curStation, desStation, distance) =>
+            service.GetPath(start, (curStation, desStation, distance) =>
             {
                 decimal shortestDistance = 0;
                 //当前点是起点时 weight = 0
@@ -159,11 +158,11 @@ namespace Trains
 
         private void VerifyNode(string start, string end)
         {
-            if (trainGraph.Find(start).Equals(null))
+            if (service.Find(start).Equals(null))
             {
                 throw new ArgumentNullException(nameof(start), "输入站点不存在");
             }
-            if (trainGraph.Find(end).Equals(null))
+            if (service.Find(end).Equals(null))
             {
                 throw new ArgumentNullException(nameof(end), "输入站点不存在");
             }

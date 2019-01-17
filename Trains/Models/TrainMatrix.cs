@@ -128,5 +128,20 @@ namespace Trains
             }
             return distance;
         }
+
+        public void GetNumberWithCondition(string start, Func<int, Stack<string>, bool> func = null, int weight = 0)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetPath(string start, Action<string, string, int> func = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Station Find(string itemStr)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
