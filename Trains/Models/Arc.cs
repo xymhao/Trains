@@ -10,9 +10,9 @@ namespace Trains
 
         public string End { get; }
 
-        public decimal Weight { get; }
+        public int Weight { get; }
 
-        public Arc(string start, string end, decimal weight)
+        public Arc(string start, string end, int weight)
         {
             Start = start;
             End = end;

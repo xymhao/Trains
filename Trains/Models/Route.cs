@@ -9,11 +9,11 @@ namespace Trains
     {
         public Route NextRoute { get; set; }
 
-        public decimal Distance { get; }
+        public int Distance { get; }
 
         public Station Station { get; }
 
-        public Route(Station station, decimal value)
+        public Route(Station station, int value)
         {
             Station = station;
             Distance = value;
@@ -24,7 +24,7 @@ namespace Trains
             return Station.Name;
         }
 
-        public void SetNextRoute(Station vertex, decimal weight)
+        public void SetNextRoute(Station vertex, int weight)
         {
             NextRoute = new Route(vertex, weight);
         }

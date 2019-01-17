@@ -32,7 +32,7 @@ namespace TrainTests
         [Test]
         public void GetNumberWithMaximumTests()
         {
-            var result = railroad.GetNumberOfRoutes("C", "C", 3, new LessThanCondtion());
+            var result = railroad.GetNumberOfRoutes("C", "C", 3, new LessThanAndEqualCondtion());
             Assert.AreEqual(2, result);
         }
 

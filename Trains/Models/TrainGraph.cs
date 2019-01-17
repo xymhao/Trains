@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Trains.Interfaces;
 
 namespace Trains
 {
-    public class TrainGraph : IList<Station>
+    public class TrainGraph : IList<Station> , IServices
     {
         List<Station> stationList;
         //是否是有向图
@@ -24,7 +25,7 @@ namespace Trains
             }
             foreach (var ds in graph.ArcList)
             {
-                AddRoute(ds.Start, ds.End, Convert.ToDecimal(ds.Weight));
+                AddRoute(ds.Start, ds.End, Convert.ToInt32(ds.Weight));
             }
         }
 
@@ -35,7 +36,7 @@ namespace Trains
             {
                 var start = g[0].ToString();
                 var end = g[1].ToString();
-                var weight = Convert.ToDecimal(g.Substring(2, g.Length - 2));
+                var weight = Convert.ToInt32(g.Substring(2, g.Length - 2));
 
                 if(!Contains(Find(start)))
                 {
@@ -60,7 +61,7 @@ namespace Trains
         /// <param name="start">始点</param>
         /// <param name="end">终点</param>
         /// <param name="weight">权值</param>
-        public void AddStation(Station start, Station end, decimal weight)
+        public void AddStation(Station start, Station end, int weight)
         {
             //找到起始顶点
             Station startVertex = Find(start);
@@ -82,7 +83,7 @@ namespace Trains
             }
         }
 
-        public void AddRoute(string start, string end, decimal weight = 0)
+        public void AddRoute(string start, string end, int weight = 0)
         {
             Station startVertex = Find(new Station(start));
             if (startVertex == null)
@@ -103,7 +104,7 @@ namespace Trains
         }
 
         //添加有向边
-        private void AddDirectedEdge(Station startStation, Station endStation, decimal weight)
+        private void AddDirectedEdge(Station startStation, Station endStation, int weight)
         {
             //无邻接点时
             if (startStation.FirstRoute == null)
@@ -245,16 +246,16 @@ namespace Trains
         /// </summary>
         /// <param name="routes"></param>
         /// <returns></returns>
-        public string GetDistanceOfRoutes(string routes)
+        public int GetDistanceOfRoutes(string routes)
         {
             var stops = routes.Split("-");
-            decimal result = 0;
+            int result = 0;
             for (var i = 0; i < stops.Length - 1; i++)
             {
                 var start = Find(new Station(stops[i]));
                 if (!start.ContainsNode(stops[i + 1]))
                 {
-                    return "NO SUCH ROUTE";
+                    throw new Exception("No Such Route");
                 }
                 var arcNode = start.FirstRoute;
                 do
@@ -267,11 +268,11 @@ namespace Trains
                     arcNode = arcNode.NextRoute;
                 } while (arcNode != null);
             }
-            return result.ToString();
+            return result;
         }
 
         //深度优先遍历
-        public void GetNumberWithCondition(string start, Func<decimal, Stack<string>, bool> func = null, int weight = 0)
+        public void GetNumberWithCondition(string start, Func<int, Stack<string>, bool> func = null, int weight = 0)
         {
             var startStation = Find(start);
             //将visited标志全部置为false
@@ -283,7 +284,7 @@ namespace Trains
         }
 
         //使用递归进行深度优先遍历
-        private void DFS(Station startStation, Func<decimal, Stack<string>,bool> func = null, decimal weight = 0, Stack<string> stack = null)
+        private void DFS(Station startStation, Func<int, Stack<string>,bool> func = null, int weight = 0, Stack<string> stack = null)
         {
             startStation.Visited = true;
             Route route = startStation.FirstRoute;
@@ -305,7 +306,7 @@ namespace Trains
             }
         }
 
-        public void GetPath(string start, Action<string, string, decimal> func = null)
+        public void GetPath(string start, Action<string, string, int> func = null)
         {
             Station vertexNode = Find(start);
             Queue<Station> queue = new Queue<Station>();

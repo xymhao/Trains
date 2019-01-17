@@ -33,7 +33,7 @@ namespace Trains
             return distance.Equals(Constant.INFINITE) ? "NO SUCH ROUTE" : distance.ToString();
         }
 
-        public int GetNumberOfRoutes(string start, string end, int num, OPCondition op)
+        public int GetNumberOfRoutes(string start, string end, int num, IOPCondition op)
         {
             int result = 0;
             trainGraph.GetNumberWithCondition(start, (distance, routes) =>
@@ -43,7 +43,7 @@ namespace Trains
                 {
                     result++;
                 }
-                return op.GetConditionResult(num, stopsNumber);
+                return op.GetConditionResult(num, stopsNumber) || stopsNumber < num;
             });
             return result;
         }
@@ -83,7 +83,7 @@ namespace Trains
         /// <param name="end"></param>
         /// <param name="num"></param>
         /// <returns></returns>
-        public int GetNumberOfDistance(string start, string end, int num, OPCondition op)
+        public int GetNumberOfDistance(string start, string end, int num, IOPCondition op)
         {
             int result = 0;
             trainGraph.GetNumberWithCondition(start, (distance, routes) =>

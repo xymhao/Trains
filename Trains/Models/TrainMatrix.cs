@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Trains.Interfaces;
 
 namespace Trains
 {
-    public class TrainMatrix
+    public class TrainMatrix : IServices
     {
-        private decimal[,] matrix;
+        private int[,] matrix;
         private int index = 0;
         public List<Vertex> VertexList { get; set; } = new List<Vertex>();
         public List<Arc> ArcList { get; set; } = new List<Arc>();
@@ -20,12 +21,12 @@ namespace Trains
                 {
                     var start = g[0].ToString();
                     var end = g[1].ToString();
-                    var weight = Convert.ToDecimal(g.Substring(2, g.Length - 2));
+                    var weight = Convert.ToInt32(g.Substring(2, g.Length - 2));
                     AddVertex(start);
                     AddVertex(end);
                     AddArc(start, end, weight);
                 }
-                matrix = new decimal[VertexList.Count, VertexList.Count];
+                matrix = new int[VertexList.Count, VertexList.Count];
                 for (var i = 0; i < VertexList.Count; i++)
                 {
                     for (var j = 0; j < VertexList.Count; j++)
@@ -40,7 +41,7 @@ namespace Trains
             }
         }
 
-        private void AddArc(string start, string end, decimal weight)
+        private void AddArc(string start, string end, int weight)
         {
             ArcList.ForEach(arc =>
             {
@@ -66,7 +67,7 @@ namespace Trains
             return VertexList.Select(p => p.Name).Contains(name);
         }
 
-        public decimal GetDistance(int start, int end)
+        public int GetDistance(int start, int end)
         {
             var startStation = FindStationByID(start);
             var endStation = FindStationByID(end);
@@ -84,7 +85,7 @@ namespace Trains
             return vertex.Name;
         }
 
-        public decimal GetDistance(string start, string end)
+        public int GetDistance(string start, string end)
         {
             var startVertex = FindVertexIDByStation(start);
             var endVertex = FindVertexIDByStation(end);
@@ -106,18 +107,24 @@ namespace Trains
             return ArcList.Find(ar => ar.Start.Equals(start) && ar.End.Equals(end));
         }
 
-        public decimal GetDistanceOfRoutes(string route)
+        public int GetDistanceOfRoutes(string route)
         {
             var stops = route.Split("-");
-            decimal distance = 0;
-            for (var i = 0; i < stops.Length - 1; i++)
+            int distance = 0;
+            try
             {
-                var value = GetDistance(stops[i], stops[i + 1]);
-                if (value == 0 || value.Equals(Constant.INFINITE))
+                for (var i = 0; i < stops.Length - 1; i++)
                 {
-                    return Constant.INFINITE;
+                    var value = GetDistance(stops[i], stops[i + 1]);
+                    checked
+                    {
+                        distance += value;
+                    }
                 }
-                distance += value;
+            }
+            catch
+            {
+                return Constant.INFINITE;
             }
             return distance;
         }

@@ -4,30 +4,30 @@ using System.Text;
 
 namespace Trains
 {
-    public abstract class OPCondition
+    public interface IOPCondition
     {
-        public abstract bool GetConditionResult(int num, int val);
+        bool GetConditionResult(int num, int val);
     }
 
-    public class LessThanCondtion : OPCondition
+    public class LessThanCondtion : IOPCondition
     {
-        public override bool GetConditionResult(int num, int val)
+        public bool GetConditionResult(int num, int val)
         {
             return val < num;
         }
     }
 
-    public class LessThanAndEqualCondtion : OPCondition
+    public class LessThanAndEqualCondtion : IOPCondition
     {
-        public override bool GetConditionResult(int num, int val)
+        public bool GetConditionResult(int num, int val)
         {
             return val <= num;
         }
     }
 
-    public class EqualCondition : OPCondition
+    public class EqualCondition : IOPCondition
     {
-        public override bool GetConditionResult(int num, int val)
+        public bool GetConditionResult(int num, int val)
         {
             return num.Equals(val);
         }

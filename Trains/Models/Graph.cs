@@ -19,7 +19,7 @@ namespace Trains
                 {
                     var start = g[0].ToString();
                     var end = g[1].ToString();
-                    var weight = Convert.ToDecimal(g.Substring(2, g.Length - 2));
+                    var weight = Convert.ToInt32(g.Substring(2, g.Length - 2));
                     AddVertex(start);
                     AddVertex(end);
                     AddArc(start, end, weight);
@@ -31,7 +31,7 @@ namespace Trains
             }
         }
 
-        private void AddArc(string start, string end, decimal weight)
+        private void AddArc(string start, string end, int weight)
         {
             ArcList.ForEach(arc =>
             {
